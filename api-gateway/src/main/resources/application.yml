@@ -1,0 +1,61 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: auth
+              uri: http://localhost:8081
+              predicates:
+                - Path=/api/auth/**
+              filters:
+                - StripPrefix=1
+            - id: market-data
+              uri: http://localhost:8082
+              predicates:
+                - Path=/api/market/**
+              filters:
+                - StripPrefix=1
+            - id: watchlist
+              uri: http://localhost:8083
+              predicates:
+                - Path=/api/watchlists/**
+              filters:
+                - StripPrefix=1
+            - id: orders
+              uri: http://localhost:8084
+              predicates:
+                - Path=/api/orders/**
+              filters:
+                - StripPrefix=1
+            - id: portfolio
+              uri: http://localhost:8085
+              predicates:
+                - Path=/api/portfolio/**
+              filters:
+                - StripPrefix=1
+            - id: stream
+              uri: ws://localhost:8086
+              predicates:
+                - Path=/ws/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans

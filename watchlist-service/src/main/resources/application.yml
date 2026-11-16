@@ -1,0 +1,37 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: watchlist-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/watchlist_db
+    username: trading
+    password: trading
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
