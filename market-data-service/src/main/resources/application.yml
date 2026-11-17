@@ -9,6 +9,9 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        # if Kafka is down, give up after 2 s instead of blocking the price feed for 60 s
+        max.block.ms: 2000
     consumer:
       group-id: market-data-service
       auto-offset-reset: latest
